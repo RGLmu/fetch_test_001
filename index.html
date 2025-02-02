@@ -1,25 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Sheets Data</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Google Sheets Data</title>
 </head>
 <body>
-  <h1>Data from Google Sheets</h1>
-  <table id="sheetData">
-    <thead>
-      <tr>
-        <th>Column 1</th>
-        <th>Column 2</th>
-        <th>Column 3</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Data will be populated here -->
-    </tbody>
-  </table>
+    <h2>Live Data from Google Sheets</h2>
+    <table border="1" id="data-table"></table>
 
-  <script src="script.js"></script>
+    <script>
+        async function fetchData() {
+            let url = "https://script.google.com/macros/s/AKfycbw2dWJS_ufsINiVAyk3iSneZhjm-H4eSjQ-sOq3U0J6MYf1hr1bjG6tVvCsuFmndqCj/exec"; // Replace with your actual Web App URL
+            let response = await fetch(url);
+            let data = await response.json();
+
+            let table = document.getElementById("data-table");
+            table.innerHTML = ""; // Clear existing data
+
+            data.forEach(row => {
+                let tr = document.createElement("tr");
+                row.forEach(cell => {
+                    let td = document.createElement("td");
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                table.appendChild(tr);
+            });
+        }
+
+        // Fetch data every 10 seconds (optional)
+        setInterval(fetchData, 10000);
+        fetchData(); // Initial fetch
+    </script>
 </body>
 </html>
